@@ -8,26 +8,26 @@ class Pokedex extends React.Component {
   constructor() {
     super();
     this.state = {
-      primeiroPokemon: 0,
+      numeroPokemon: 0,
     };
     this.proximoPokemon = this.proximoPokemon.bind(this);
   }
 
-  proximoPokemon() {
+  proximoPokemon(pokemons) {
     this.setState((estadoAnterior) => ({
-      primeiroPokemon: estadoAnterior.primeiroPokemon + 1,
+      numeroPokemon: (estadoAnterior.numeroPokemon + 1) % pokemons,
     }));
   }
 
   render() {
     const { pokemonList } = this.props;
-    const { primeiroPokemon } = this.state;
+    const { numeroPokemon } = this.state;
     return (
       <div className="pokedex">
-        <Pokemon pokemon={ pokemonList[primeiroPokemon] } />
+        <Pokemon pokemon={ pokemonList[numeroPokemon] } />
         <button
           type="button"
-          onClick={ () => this.proximoPokemon(primeiroPokemon.length) }
+          onClick={ () => this.proximoPokemon(pokemonList.length) }
         >
           Próximo pokémon
         </button>
@@ -36,12 +36,8 @@ class Pokedex extends React.Component {
   }
 }
 
-Pokedex.defaultProps = {
-  pokemonList: [],
-};
-
 Pokedex.propTypes = {
   pokemonList: arrayOf(pokemonType),
-};
+}.isRequired;
 
 export default Pokedex;
